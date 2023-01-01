@@ -1,0 +1,46 @@
+---
+- name: Fail if defined Sonarqube user is missing
+  ansible.builtin.fail:
+    msg: "Sonarqube '{{ sonarqube_system_user }}' is not defined"
+  when: sonarqube_system_user | length == 0
+
+- name: Ensure Sonarqube user exist
+  ansible.builtin.user:
+    name: "{{ sonarqube_system_user }}"
+    createhome: yes
+    home: "{{ sonarqube_location }}"
+
+- name: Copy sonarqube docker-compose template.
+  ansible.builtin.template:
+    src: templates/docker-compose.yml.j2
+    dest: "{{ sonarqube_location }}/docker-compose.yml"
+    owner: sonarqube
+    group: sonarqube
+    mode: '0644'
+  notify: Restart containers
+
+- name: Copy sonarqube prop
+  ansible.builtin.template:
+    src: templates/sonar.properties.j2
+    dest: "{{ sonarqube_location }}/sonar.properties"
+    owner: sonarqube
+    group: sonarqube
+    mode: '0644'
+  notify: Restart containers
+
+- name: start up sonarqube services
+  become: true
+  shell: docker-compose up -d
+  args:
+    chdir: "{{ sonarqube_location }}"
+  register: _sonarqube_result
+  changed_when: (_sonarqube_result.stderr | regex_search('Recreating')) == 'Recreating'
+
+- name: Check status code for Sonarqube
+  ansible.builtin.uri:
+    url: "{{ sonarqube_url }}"
+    status_code: 200
+  register: result
+  until: result.status == 200
+  retries: 20
+  delay: 5

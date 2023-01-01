@@ -1,0 +1,20 @@
+---
+# Sonarqube version
+sonarqube_version: 9.8.0-community
+# Sonarqube system User
+sonarqube_system_user: sonarqube
+# Sonarqube setup location
+sonarqube_location: /home/sonarqube
+# Sonarqube url
+sonarqube_url: "http://localhost:9000"
+# Sonarqube jdbc user
+# Sonarqube jdbc url
+sonarqube_jdbc_url: jdbc:postgresql://db:5432/sonar
+sonarqube_jdbc_user: sonar
+# Sonarqube jdbv password
+sonarqube_jdbc_password: sonar
+# Postgres user
+postgres_user: sonar
+# Postgres password¨
+postgres_password: sonar
+

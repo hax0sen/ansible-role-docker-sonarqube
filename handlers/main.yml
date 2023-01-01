@@ -1,0 +1,6 @@
+---
+- name: Restart containers
+  become: true
+  shell: docker-compose down && sleep 5 && docker-compose up -d
+  args:
+    chdir: "{{ sonarqube_location }}"
