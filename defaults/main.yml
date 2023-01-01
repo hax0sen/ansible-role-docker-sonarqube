@@ -7,9 +7,9 @@ sonarqube_system_user: sonarqube
 sonarqube_location: /home/sonarqube
 # Sonarqube url
 sonarqube_url: "http://localhost:9000"
-# Sonarqube jdbc user
 # Sonarqube jdbc url
 sonarqube_jdbc_url: jdbc:postgresql://db:5432/sonar
+# Sonarqube jdbc user
 sonarqube_jdbc_user: sonar
 # Sonarqube jdbv password
 sonarqube_jdbc_password: sonar
